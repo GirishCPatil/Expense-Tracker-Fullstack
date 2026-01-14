@@ -4,6 +4,7 @@ const cors = require('cors');
 const PORT = process.env.PORT || 4000;
 const sequelize = require('./utils/db');
 const userRoutes = require('./routes/userRoutes');
+const expRoutes = require('./routes/expRoutes');
 
 app.use(cors());
 app.use(express.json());
@@ -16,6 +17,7 @@ app.get('/', (req, res) => {
 
 
 app.use('/users', userRoutes);
+app.use('/expenses',expRoutes);
 
 sequelize.sync()
     .then(() => {
