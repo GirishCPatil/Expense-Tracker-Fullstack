@@ -10,27 +10,18 @@ document.querySelector('form').addEventListener('submit', async (e) => {
       password
     });
 
-    // Success
     if (res.status === 200) {
-      alert('User login successful');
+      alert(res.data.message);
+      // Save token to local storage
+      localStorage.setItem('token', res.data.token); 
+      // Redirect to your expense page
+      window.location.href = "./expense.html"; 
     }
 
   } catch (err) {
     console.error(err);
-
     if (err.response) {
-      const status = err.response.status;
-      const message = err.response.data.message;
-
-      if (status === 401) {
-        alert('User not authorized (Wrong password)');
-      } else if (status === 404) {
-        alert('User not found');
-      } else if (status === 400) {
-        alert(message);
-      } else {
-        alert('Something went wrong');
-      }
+      alert(err.response.data.message);
     } else {
       alert('Server not reachable');
     }

@@ -1,40 +1,48 @@
 const expenseModel = require('../models/expenseModel');
 
 const addExpense = async (req, res) => {
-  try {
     const { expAmt, expDes, expCat } = req.body;
-    if (!expAmt || !expDes || !expCat) {
-        return res.status(400).json({ message: 'All fields are required' });
+    try {
+        if (!expAmt || !expDes || !expCat) {
+            return res.status(400).json({ message: 'All fields are required' });
+        }
+        
+        // Use the magic method createExpense provided by Sequelize association
+        await req.user.createExpense({ 
+            expAmt, 
+            expDes, 
+            expCat 
+        });
+        
+        res.status(201).json({ message: 'Expense added successfully' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, error: error });
     }
-    await expenseModel.create({
-        expAmt,
-        expDes,
-        expCat
-    });
-    
-    res.status(201).json({ message: 'Expense added successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
-  } 
 };
 
-
-
 const allExpenses = async (req, res) => {
-  try {
-    const expenses = await expenseModel.findAll();  
-    res.status(200).json(expenses);
+    try {
+        const expenses = await req.user.getExpenses();  
+        res.status(200).json(expenses);
     } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
-  }
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
 };
 
 const deleteExpense = async (req, res) => { 
+    const expenseId = req.params.id;
     try {
-        const expenseId = req.params.id;
-        await expenseModel.destroy({ where: { id: expenseId } });
+        // Only delete if the ID matches AND the userId belongs to the requester
+        const result = await expenseModel.destroy({ 
+            where: { id: expenseId, userId: req.user.id } 
+        });
+        
+        if (result === 0) {
+            return res.status(404).json({ success: false, message: "Expense does not belong to user" });
+        }
+        
         res.status(200).json({ message: 'Expense deleted successfully' });
     }
     catch (error) {
@@ -44,4 +52,3 @@ const deleteExpense = async (req, res) => {
 };
 
 module.exports = { addExpense, allExpenses, deleteExpense };
-

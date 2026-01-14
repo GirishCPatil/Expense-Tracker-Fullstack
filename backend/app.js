@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 4000;
 const sequelize = require('./utils/db');
 const userRoutes = require('./routes/userRoutes');
 const expRoutes = require('./routes/expRoutes');
+require('./models/index');
 
 app.use(cors());
 app.use(express.json());
@@ -19,7 +20,7 @@ app.get('/', (req, res) => {
 app.use('/users', userRoutes);
 app.use('/expenses',expRoutes);
 
-sequelize.sync()
+sequelize.sync({ force: true })
     .then(() => {
         console.log('Database & tables created!');
 app.listen(PORT, () => {

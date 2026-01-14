@@ -1,3 +1,5 @@
+const token = localStorage.getItem('token');
+
 document.querySelector('form').addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -10,47 +12,44 @@ document.querySelector('form').addEventListener('submit', async (e) => {
       expAmt,
       expDes,
       expCat
-    });
+    }, { headers: {"Authorization": token} }); 
+
       loadExpenses();
     if (res.status === 201) {
-      alert('Expense added successfully');
+      document.getElementById('expAmt').value = "";
+      document.getElementById('expDes').value = "";
     }
 
     } catch (err) {
     console.error(err);
-    if (err.response) {
-      const status = err.response.status;
-      const message = err.response.data.message;
-        if (status === 400) {
-        alert(message);
-      } else {
-        alert('Something went wrong');
-      }
-    } else {
-        alert('Server not reachable');
-    }
+    alert('Something went wrong');
   }     
 });
 
 
 const loadExpenses = async () => {
   try {
-    const res = await axios.get('http://localhost:4000/expenses/getExpenses');
+    const res = await axios.get('http://localhost:4000/expenses/getExpenses', { headers: {"Authorization": token} });
+    
     if (res.status === 200) {
       const expenses = res.data;
-      console.log(expenses);
       const expenseList = document.getElementById('expenseList');
       expenseList.innerHTML = '';
+        
         expenses.forEach(expense => {
         const li = document.createElement('li');
+        li.textContent = `Amount: ${expense.expAmt}, Description: ${expense.expDes}, Category: ${expense.expCat} `;
+        
         const deleteBtn = document.createElement('button');
-      
-        li.textContent = `Amount: ${expense.expAmt}, Description: ${expense.expDes}, Category: ${expense.expCat}`;
-        expenseList.appendChild(li);
-          deleteBtn.textContent = 'Delete';
-        deleteBtn.id = expense.id;
-    deleteBtn.addEventListener('click', () => deleteExpense(expense.id));
+        deleteBtn.textContent = 'Delete';
+        
+        // Attach event listener directly
+        deleteBtn.onclick = () => {
+            deleteExpense(expense.id);
+        }
+        
         li.appendChild(deleteBtn);
+        expenseList.appendChild(li);
       });
     }
     } catch (err) {
@@ -60,11 +59,9 @@ const loadExpenses = async () => {
 };
 
 const deleteExpense = async (id) => {
-    const expenseId = id;
     try {
-        const res = await axios.delete(`http://localhost:4000/expenses/deleteExpense/${expenseId}`);
+        const res = await axios.delete(`http://localhost:4000/expenses/deleteExpense/${id}`, { headers: {"Authorization": token} });
         if (res.status === 200) {
-            alert('Expense deleted successfully');
             loadExpenses();
         }
     } catch (err) {
@@ -73,4 +70,4 @@ const deleteExpense = async (id) => {
     }
 };  
 
-window.onload = loadExpenses;
+window.addEventListener("DOMContentLoaded", loadExpenses);
