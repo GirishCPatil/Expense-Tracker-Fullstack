@@ -5,8 +5,11 @@ const PORT = process.env.PORT || 4000;
 const sequelize = require('./utils/db');
 const userRoutes = require('./routes/userRoutes');
 const expRoutes = require('./routes/expRoutes');
+const PaymentRoutes = require('./routes/paymentRoutes');
 require('./models/index');
+const path = require("path");
 
+app.use("/frontend", express.static(path.join(__dirname, "../frontend")));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,8 +22,9 @@ app.get('/', (req, res) => {
 
 app.use('/users', userRoutes);
 app.use('/expenses',expRoutes);
+app.use('/payment',PaymentRoutes);
 
-sequelize.sync({ force: true })
+sequelize.sync({ alter: true })
     .then(() => {
         console.log('Database & tables created!');
 app.listen(PORT, () => {
