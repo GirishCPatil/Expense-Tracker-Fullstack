@@ -33,8 +33,7 @@ const premiumStatus = async (req, res) => {
 const leaderboard = async (req, res) => {
     try {
         const users = await User.findAll({
-            attributes: ['id', 'name', [sequelize.fn('SUM', sequelize.col('expenses.expAmt')), 'totalExpense']],
-            include: [{ model: Expense, attributes: [] }],
+            attributes: ['id', 'name',  'totalExpense'],
             group: ['User.id'],
             order: [[sequelize.literal('totalExpense'), 'DESC']]
         }); 

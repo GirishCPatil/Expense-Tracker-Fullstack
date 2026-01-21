@@ -13,6 +13,9 @@ const addExpense = async (req, res) => {
             expDes, 
             expCat 
         });
+
+        req.user.totalExpense += parseInt(expAmt);
+        await req.user.save();
         
         res.status(201).json({ message: 'Expense added successfully' });
     } catch (error) {

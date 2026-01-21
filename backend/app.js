@@ -25,7 +25,7 @@ app.use('/expenses',expRoutes);
 app.use('/payment',PaymentRoutes);
 app.use('/premium', require('./routes/premiumRoutes'));
 
-sequelize.sync({ alter: true })
+sequelize.sync()
     .then(() => {
         console.log('Database & tables created!');
 app.listen(PORT, () => {
