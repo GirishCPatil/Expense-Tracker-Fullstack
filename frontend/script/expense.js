@@ -1,21 +1,43 @@
 const token = localStorage.getItem('token');
 const premiumBtn = document.getElementById('premiumBtn');
 const premiumTitle = document.getElementById('premiumTitle');
+const leaderBoardBtn = document.getElementById('leaderBoardBtn');
+const leaderBoardList = document.getElementById('LeaderBoard');
+  
+  
 
 const isPremium = async () => {
     try {
         const res = await axios.get('http://localhost:4000/premium/premium-status', { headers: {"Authorization": token} });
         if (res.status === 200 && res.data.isPremium) {
             premiumBtn.style.display = 'none';
-            document.body.style.backgroundColor = 'gold';
+            document.body.style.backgroundColor = 'lightgoldenrodyellow';
             premiumTitle.style.display = 'block';
-            alert('You are a premium user!');
+          alert('You are a Premium User Now!');
         }
     } catch (err) {
         console.error(err);
     }
 };
 
+leaderBoardBtn.addEventListener('click', async () => {
+    try {
+        const res = await axios.get('http://localhost:4000/premium/leaderboard', { headers: {"Authorization": token} });
+        if (res.status === 200) {
+            const expenses = res.data.users;
+            console.log(expenses);
+            leaderBoardList.innerHTML = '';
+            expenses.forEach(entry => {
+                const li = document.createElement('li');
+                li.textContent = `Name: ${entry.name}, Total Expense: ${entry.totalExpense===null ? 0 : entry.totalExpense}`;
+                leaderBoardList.appendChild(li);
+            }); 
+
+        }
+    } catch (err) {
+        console.error(err);
+    }
+  });
 
 document.querySelector('form').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -46,6 +68,7 @@ document.querySelector('form').addEventListener('submit', async (e) => {
 
 const loadExpenses = async () => {
   try {
+
     const res = await axios.get('http://localhost:4000/expenses/getExpenses', { headers: {"Authorization": token} });
     
     if (res.status === 200) {
@@ -88,4 +111,5 @@ const deleteExpense = async (id) => {
 };  
 
 
-window.addEventListener("DOMContentLoaded", loadExpenses, isPremium);
+window.addEventListener("DOMContentLoaded", loadExpenses);
+window.addEventListener("DOMContentLoaded", isPremium);

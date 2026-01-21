@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const userAuthentication = require('../middlware/auth');
-const { premiumStatus } = require('../controllers/premiumController');
+const {authenticate} = require('../middlware/auth');
+const { premiumStatus , leaderboard} = require('../controllers/premiumController');
 
-router.get('/premium-status', userAuthentication, premiumStatus);
-
-
+router.get('/premium-status', authenticate, premiumStatus);
+router.get('/leaderboard', leaderboard);
 
 module.exports = router;
