@@ -1,4 +1,21 @@
 const token = localStorage.getItem('token');
+const premiumBtn = document.getElementById('premiumBtn');
+const premiumTitle = document.getElementById('premiumTitle');
+
+const isPremium = async () => {
+    try {
+        const res = await axios.get('http://localhost:4000/premium/premium-status', { headers: {"Authorization": token} });
+        if (res.status === 200 && res.data.isPremium) {
+            premiumBtn.style.display = 'none';
+            document.body.style.backgroundColor = 'gold';
+            premiumTitle.style.display = 'block';
+            alert('You are a premium user!');
+        }
+    } catch (err) {
+        console.error(err);
+    }
+};
+
 
 document.querySelector('form').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -70,4 +87,5 @@ const deleteExpense = async (id) => {
     }
 };  
 
-window.addEventListener("DOMContentLoaded", loadExpenses);
+
+window.addEventListener("DOMContentLoaded", loadExpenses, isPremium);

@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 app.use('/users', userRoutes);
 app.use('/expenses',expRoutes);
 app.use('/payment',PaymentRoutes);
+app.use('/premium', require('./routes/premiumRoutes'));
 
 sequelize.sync({ alter: true })
     .then(() => {

@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <button style="right: 10px; position: absolute;" ><a href="../views/pay.html">Buy premium membership</a></button>
+    <button id="premiumBtn" style="right: 10px; position: absolute;" ><a href="../views/pay.html">Buy premium membership</a></button>
     <form action="" method="post">
      <label for="expAmt">Choose Expense Amount:</label>
         <input type="number" id="expAmt" name="expAmt" required><br><br>
@@ -22,7 +22,7 @@
         </select><br><br>
         <button type="submit">Add Expense</button>
     </form>
-
+     <p id="premiumTitle" style="display: none;">You are Premium User: <button>Show LeaderBoard</button> </p>
     <ul id="expenseList"></ul>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="../script/expense.js"></script>
