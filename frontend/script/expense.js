@@ -88,7 +88,7 @@ const loadExpenses = async () => {
         
         // Attach event listener directly
         deleteBtn.onclick = () => {
-            deleteExpense(expense.id);
+            deleteExpense(expense.id, expense.expAmt);
         }
         
         li.appendChild(deleteBtn);
@@ -101,9 +101,9 @@ const loadExpenses = async () => {
     }
 };
 
-const deleteExpense = async (id) => {
+const deleteExpense = async (id,expAmt) => {
     try {
-        const res = await axios.delete(`http://localhost:4000/expenses/deleteExpense/${id}`, { headers: {"Authorization": token} });
+        const res = await axios.delete(`http://localhost:4000/expenses/deleteExpense/${id}?expAmt=${expAmt}`,{ headers: {"Authorization": token} }, );
         if (res.status === 200) {
             loadExpenses();
         }
