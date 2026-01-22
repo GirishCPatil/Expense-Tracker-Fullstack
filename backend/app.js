@@ -6,6 +6,8 @@ const sequelize = require('./utils/db');
 const userRoutes = require('./routes/userRoutes');
 const expRoutes = require('./routes/expRoutes');
 const PaymentRoutes = require('./routes/paymentRoutes');
+const premiumRoutes = require('./routes/premiumRoutes');
+const geminiRoutes = require('./routes/geminiRoutes');
 require('./models/index');
 const path = require("path");
 
@@ -23,7 +25,8 @@ app.get('/', (req, res) => {
 app.use('/users', userRoutes);
 app.use('/expenses',expRoutes);
 app.use('/payment',PaymentRoutes);
-app.use('/premium', require('./routes/premiumRoutes'));
+app.use('/premium',premiumRoutes);
+app.use('/gemini', geminiRoutes);
 
 sequelize.sync()
     .then(() => {

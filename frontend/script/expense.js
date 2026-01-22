@@ -44,13 +44,16 @@ document.querySelector('form').addEventListener('submit', async (e) => {
 
   const expAmt = document.getElementById('expAmt').value;
   const expDes = document.getElementById('expDes').value;
-  const expCat = document.getElementById('expCat').value;
 
+
+  const expGemninicat = await axios.get(`http://localhost:4000/gemini/getCategory?prompt=${expDes}`);
+  console.log("Gemini Response:", expGemninicat.data.response.candidates[0].content.parts[0].text);
+  const expCatFromGemini = expGemninicat.data.response.candidates[0].content.parts[0].text.slice(2,-2);
     try {
     const res = await axios.post('http://localhost:4000/expenses/addExpense', {
       expAmt,
       expDes,
-      expCat
+      expCat: expCatFromGemini
     }, { headers: {"Authorization": token} }); 
 
       loadExpenses();
