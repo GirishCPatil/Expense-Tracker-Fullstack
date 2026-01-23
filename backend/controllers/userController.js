@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const { sendResetEmail } = require("../services/emailService");
+const ForgotPasswordRequest = require("../models/forgotPasswordRequest");
 
 const createUser = async (req, res) => {
   try {
@@ -62,30 +63,40 @@ res.status(200).json({ message: 'Login successful', token });
 
 forgotPassword = async (req, res) => {
   const { email } = req.body;
-console.log("Forgot Password Request for:", email);
+
   const user = await User.findOne({ where: { email } });
-  console.log("User Found:", user.id);
   if (!user) return res.status(404).json({ message: "User not found" });
 
-  const resetLink = `http://localhost:4000/users/reset-password/${user.id}`;
+  const request = await ForgotPasswordRequest.create({
+    userId: user.id
+  });
+
+  const resetLink = `http://localhost:4000/users/password/resetpassword/${request.id}`;
 
   await sendResetEmail(user.email, resetLink);
 
-  res.json({ message: "Reset link sent" });
+  res.json({ message: "Reset link sent to email" });
 };
 
-
 resetPassword = async (req, res) => {
-  const { userId } = req.params;
+  const { uuid } = req.params;
   const { newPassword } = req.body;
 
-  const user = await User.findByPk(userId);
-  if (!user) return res.status(404).json({ message: "Invalid user" });
+  const request = await ForgotPasswordRequest.findOne({
+    where: { id: uuid, isActive: true }
+  });
 
-  const hashed = await bcrypt.hash(newPassword, 10);
-  user.password = hashed;
+  if (!request) {
+    return res.status(400).json({ message: "Link expired or invalid" });
+  }
 
+  const user = await User.findByPk(request.userId);
+
+  user.password = await bcrypt.hash(newPassword, 10);
   await user.save();
+
+  request.isActive = false;
+  await request.save();
 
   res.json({ message: "Password reset successful" });
 };

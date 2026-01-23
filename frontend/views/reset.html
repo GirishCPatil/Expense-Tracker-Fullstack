@@ -1,21 +1,23 @@
 <form id="resetForm">
   <input type="password" id="password" placeholder="New password" required />
-  <button>Reset</button>
+  <button>Reset Password</button>
 </form>
 
 <script>
-const userId = window.location.pathname.split("/").pop();
+const uuid = window.location.pathname.split("/").pop();
 
 document.getElementById("resetForm").onsubmit = async (e) => {
   e.preventDefault();
+
   const password = document.getElementById("password").value;
 
-  await fetch(`http://localhost:4000/users/reset-password/${userId}`, {
+  const res = await fetch(`http://localhost:4000/users/password/resetpassword/${uuid}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ newPassword: password })
   });
 
-  alert("Password updated");
+  const data = await res.json();
+  alert(data.message);
 };
 </script>
