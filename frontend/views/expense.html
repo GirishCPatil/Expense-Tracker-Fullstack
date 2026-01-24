@@ -15,7 +15,14 @@
         <button type="submit">Add Expense</button>
     </form>
      <p id="premiumTitle" style="display: none;">You are Premium User: <button id="leaderBoardBtn">Show LeaderBoard</button> <button><a href="../views/report.html">Show Report</a></button></p>
-   <ul id="expenseList"></ul>
+     <label for="pageSizeSelect">Expense Per Page:</label>
+     <select id="pageSizeSelect">
+  <option value="5">5</option>
+  <option value="10">10</option>
+  <option value="20">20</option>
+  <option value="40">40</option>
+</select>
+     <ul id="expenseList"></ul>
 <div id="pagination"></div>
 
     <ul id="LeaderBoard"></ul>
