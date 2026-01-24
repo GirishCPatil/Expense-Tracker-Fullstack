@@ -4,11 +4,11 @@ const sequalize = require('../utils/db');
 
 
 const addExpense = async (req, res) => {
-    const { expAmt, expDes, expCat } = req.body;
+    const { expAmt, expDes, expCat ,note} = req.body;
     const t = await sequalize.transaction();
 
     try {
-        if (!expAmt || !expDes || !expCat) {
+        if (!expAmt || !expDes || !expCat || !note) {
             return res.status(400).json({ message: 'All fields are required' });
         }
         
@@ -16,7 +16,8 @@ const addExpense = async (req, res) => {
         await req.user.createExpense({ 
             expAmt, 
             expDes, 
-            expCat 
+            expCat,
+            note
         }, { transaction: t });
 
         req.user.totalExpense += parseInt(expAmt);

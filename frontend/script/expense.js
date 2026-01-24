@@ -51,6 +51,7 @@ document.querySelector('form').addEventListener('submit', async (e) => {
 
   const expAmt = document.getElementById('expAmt').value;
   const expDes = document.getElementById('expDes').value;
+  const note = document.getElementById('note').value;
 
   try {
     const geminiRes = await axios.get(`http://localhost:4000/gemini/getCategory?prompt=${expDes}`);
@@ -59,12 +60,14 @@ document.querySelector('form').addEventListener('submit', async (e) => {
     const res = await axios.post('http://localhost:4000/expenses/addExpense', {
       expAmt,
       expDes,
-      expCat
+      expCat,
+      note
     }, { headers: { Authorization: token } });
 
     if (res.status === 201) {
       document.getElementById('expAmt').value = '';
       document.getElementById('expDes').value = '';
+      document.getElementById('note').value = '';
       loadExpenses();
     }
   } catch {}
