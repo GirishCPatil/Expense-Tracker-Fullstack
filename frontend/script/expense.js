@@ -165,6 +165,12 @@ downloadBtn.addEventListener('click', async () => {
   }
 });
 
+let logoutBtn = document.getElementById('logoutBtn');
+
+logoutBtn.addEventListener('click', () => {
+  localStorage.removeItem('token');
+});
+
 
 window.addEventListener("DOMContentLoaded", () => {
   loadExpenses();
