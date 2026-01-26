@@ -23,7 +23,7 @@ pageSizeSelect.addEventListener('change', () => {
 
 const isPremium = async () => {
   try {
-    const res = await axios.get('http://localhost:4000/premium/premium-status', { headers: { Authorization: token } });
+    const res = await axios.get('http://15.206.27.0:4000/premium/premium-status', { headers: { Authorization: token } });
     if (res.status === 200 && res.data.isPremium) {
       premiumBtn.style.display = 'none';
       document.body.style.backgroundColor = 'lightgoldenrodyellow';
@@ -34,7 +34,7 @@ const isPremium = async () => {
 
 leaderBoardBtn.addEventListener('click', async () => {
   try {
-    const res = await axios.get('http://localhost:4000/premium/leaderboard', { headers: { Authorization: token } });
+    const res = await axios.get('http://15.206.27.0:4000/premium/leaderboard', { headers: { Authorization: token } });
     if (res.status === 200) {
       leaderBoardList.innerHTML = '';
       res.data.users.forEach(entry => {
@@ -54,10 +54,10 @@ document.querySelector('form').addEventListener('submit', async (e) => {
   const note = document.getElementById('note').value;
 
   try {
-    const geminiRes = await axios.get(`http://localhost:4000/gemini/getCategory?prompt=${expDes}`);
+    const geminiRes = await axios.get(`http://15.206.27.0:4000/gemini/getCategory?prompt=${expDes}`);
     const expCat = geminiRes.data.response.candidates[0].content.parts[0].text.slice(2, -2);
 
-    const res = await axios.post('http://localhost:4000/expenses/addExpense', {
+    const res = await axios.post('http://15.206.27.0:4000/expenses/addExpense', {
       expAmt,
       expDes,
       expCat,
@@ -75,7 +75,7 @@ document.querySelector('form').addEventListener('submit', async (e) => {
 
 const loadExpenses = async () => {
   try {
-    const res = await axios.get('http://localhost:4000/expenses/getExpenses', { headers: { Authorization: token } });
+    const res = await axios.get('http://15.206.27.0:4000/expenses/getExpenses', { headers: { Authorization: token } });
     if (res.status === 200) {
       allExpenses = res.data;
       const totalPages = Math.max(1, Math.ceil(allExpenses.length / itemsPerPage));
@@ -122,7 +122,7 @@ function renderPagination() {
 
 const deleteExpense = async (id, expAmt) => {
   try {
-    const res = await axios.delete(`http://localhost:4000/expenses/deleteExpense/${id}?expAmt=${expAmt}`, { headers: { Authorization: token } });
+    const res = await axios.delete(`http://15.206.27.0:4000/expenses/deleteExpense/${id}?expAmt=${expAmt}`, { headers: { Authorization: token } });
     if (res.status === 200) {
       allExpenses = allExpenses.filter(e => e.id !== id);
       const totalPages = Math.max(1, Math.ceil(allExpenses.length / itemsPerPage));
@@ -140,7 +140,7 @@ downloadBtn.addEventListener('click', async () => {
     downloadBtn.disabled = true;
     downloadBtn.innerText = 'Preparing download...';
 
-    const res = await axios.get('http://localhost:4000/expenses/download', {
+    const res = await axios.get('http://15.206.27.0:4000/expenses/download', {
       headers: { Authorization: token }
     });
 

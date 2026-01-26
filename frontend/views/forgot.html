@@ -94,7 +94,7 @@ document.getElementById("forgotForm").onsubmit = async (e) => {
   e.preventDefault();
   const email = document.getElementById("email").value;
 
-  await fetch("http://localhost:4000/users/forgot-password", {
+  await fetch("http://15.206.27.0:4000/users/forgot-password", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email })

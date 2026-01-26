@@ -6,7 +6,7 @@ document.querySelector('form').addEventListener('submit', async (e) => {
   const password = document.getElementById('password').value;
 
   try {
-    const res = await axios.post('http://localhost:4000/users/signup', {
+    const res = await axios.post('http://15.206.27.0:4000/users/signup', {
       name,
       email,
       password
