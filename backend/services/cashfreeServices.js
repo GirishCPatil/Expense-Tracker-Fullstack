@@ -36,6 +36,7 @@ exports.createOrder = async (orderId, orderAmount, orderCurrency='INR', customer
         // FIX 3: Use the instance method (without the date string)
         const response = await cashfree.PGCreateOrder(request);
        
+        console.log("Order Created:", response.data);
         return response.data.payment_session_id;
 
     } catch (error) {

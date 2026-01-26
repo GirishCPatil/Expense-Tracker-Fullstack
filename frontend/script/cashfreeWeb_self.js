@@ -13,7 +13,6 @@ document.getElementById("renderBtn").addEventListener("click", async () => {
         });
 
         const data = await response.json();
-
         const paymentSessionId = data.paymentSessionId;
 
         let checkoutOptions = {

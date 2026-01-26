@@ -12,8 +12,6 @@ const authenticate = (req, res, next) => {
                 // If user doesn't exist in DB anymore, throw error
                 throw new Error('User not found'); 
             }
-            // ----------------------
-            
             req.user = user;
             next();
         }).catch(err => {
