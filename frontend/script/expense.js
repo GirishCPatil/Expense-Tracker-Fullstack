@@ -133,6 +133,39 @@ const deleteExpense = async (id, expAmt) => {
   } catch {}
 };
 
+const downloadBtn = document.getElementById('downloadBtn');
+
+downloadBtn.addEventListener('click', async () => {
+  try {
+    downloadBtn.disabled = true;
+    downloadBtn.innerText = 'Preparing download...';
+
+    const res = await axios.get('http://localhost:4000/expenses/download', {
+      headers: { Authorization: token }
+    });
+
+    const fileUrl = res.data.fileUrl;
+
+    const a = document.createElement('a');
+    a.href = fileUrl;
+    a.download = `expenses-${Date.now()}.xlsx`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+  } catch (err) {
+    if (err.response && err.response.status === 401) {
+      alert('Only premium users can download expenses');
+    } else {
+      alert('Download failed');
+    }
+  } finally {
+    downloadBtn.disabled = false;
+    downloadBtn.innerText = 'Download Expenses';
+  }
+});
+
+
 window.addEventListener("DOMContentLoaded", () => {
   loadExpenses();
   isPremium();
