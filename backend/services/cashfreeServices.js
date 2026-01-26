@@ -28,7 +28,7 @@ exports.createOrder = async (orderId, orderAmount, orderCurrency='INR', customer
             },
             payment_methods: "cc,nb,upi,paylater",
             order_meta: {
-                return_url: `https://incentives-prisoners-titans-felt.trycloudflare.com/payment/payment-status?order_id=${orderId}&user_id=${customerId}`,
+                return_url: `http://15.206.27.0:4000/payment/payment-status?order_id=${orderId}&user_id=${customerId}`,
             },
             order_expiry_time: formattedExpiryDate,
         };
