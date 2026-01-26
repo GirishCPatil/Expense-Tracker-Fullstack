@@ -1,9 +1,9 @@
-
+const BaseUrl ="https://incentives-prisoners-titans-felt.trycloudflare.com"
 document.getElementById("renderBtn").addEventListener("click", async () => {
     try {
         let token = localStorage.getItem("token");
         //  Send token in Authorization header
-        const response = await fetch("http://15.206.27.0:4000/payment/pay", {
+        const response = await fetch(`${BaseUrl}/payment/pay`, {
             method: "POST",
             headers: {
         "Content-Type": "application/json",

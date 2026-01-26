@@ -90,11 +90,12 @@ button:hover {
 </div>
 
 <script>
+    const BaseUrl ="https://incentives-prisoners-titans-felt.trycloudflare.com"
 document.getElementById("forgotForm").onsubmit = async (e) => {
   e.preventDefault();
   const email = document.getElementById("email").value;
 
-  await fetch("http://15.206.27.0:4000/users/forgot-password", {
+  await fetch(`${BaseUrl}/users/forgot-password`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email })

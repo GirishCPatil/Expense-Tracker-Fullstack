@@ -91,13 +91,13 @@ button:hover {
 
 <script>
 const uuid = window.location.pathname.split("/").pop();
-
+const BaseUrl ="https://incentives-prisoners-titans-felt.trycloudflare.com"
 document.getElementById("resetForm").onsubmit = async (e) => {
   e.preventDefault();
 
   const password = document.getElementById("password").value;
 
-  const res = await fetch(`http://15.206.27.0:4000/users/password/resetpassword/${uuid}`, {
+  const res = await fetch(`${BaseUrl}/users/password/resetpassword/${uuid}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ newPassword: password })

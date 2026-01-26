@@ -71,8 +71,7 @@ forgotPassword = async (req, res) => {
     userId: user.id
   });
 
-  const resetLink = `https://roulette-struggle-algorithms-electronics.trycloudflare.com
-/users/password/resetpassword/${request.id}`;
+  const resetLink = `https://incentives-prisoners-titans-felt.trycloudflare.com/users/password/resetpassword/${request.id}`;
 
   await sendResetEmail(user.email, resetLink);
 
