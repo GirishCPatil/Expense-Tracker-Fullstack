@@ -31,7 +31,7 @@ exports.processPayment = async (req, res) => {
 
     } catch (error) {
         console.log("Error processing payment:", error);
-        res.status(500).json({ message: "Payment failed" });
+        res.status(500).json({ message: `Payment failed ${error}` });
     }
 };
 
